@@ -32,10 +32,7 @@ public class AngajatDao {
             insertQuery.setString(1, angajat.getNume());
             insertQuery.setInt(2, angajat.getVarsta());
             insertQuery.setInt(3, angajat.getDepartamentiId());
-            Boolean rez = insertQuery.executeUpdate() != 0;
-            insertQuery.close();
-            connection.close();
-            return rez;
+            return insertQuery.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,10 +42,7 @@ public class AngajatDao {
     public boolean deleteByNume(String nume) {
         try {
             deleteQuery.setString(1, nume);
-            boolean rez =  deleteQuery.executeUpdate() != 0;
-            deleteQuery.close();
-            connection.close();
-            return rez;
+            return   deleteQuery.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,10 +50,13 @@ public class AngajatDao {
     }
 
     public List<Angajat> findAllById(int departamentId) {
+
         try {
             selectQuery.setInt(1, departamentId);
-            ResultSet result = selectQuery.executeQuery();
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (ResultSet result = selectQuery.executeQuery()){
             List<Angajat> angajati = new ArrayList<>();
             while(result.next()) {
                 Angajat angajat = new Angajat(
@@ -70,8 +67,6 @@ public class AngajatDao {
                 );
                 angajati.add(angajat);
             }
-            selectQuery.close();
-            connection.close();
             return angajati;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -33,10 +33,7 @@ public class DepartamentDao {
             insertQuery.setString(1,numeDepartament);
             int nrLindiMedicate = 0;
             nrLindiMedicate = insertQuery.executeUpdate();
-            Boolean rez = nrLindiMedicate != 0;
-            insertQuery.close();
-            connection.close();
-            return rez;
+            return  nrLindiMedicate != 0;
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -53,13 +50,10 @@ public class DepartamentDao {
                 Departament departament = new Departament(id,nume);
                 departamente.add(departament);
             }
-            selectQueriy.close();
-            connection.close();
             return departamente;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
     }
-
 }

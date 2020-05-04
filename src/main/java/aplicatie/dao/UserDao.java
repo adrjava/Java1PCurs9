@@ -30,10 +30,7 @@ public class UserDao {
             insertQuery.setString(1, user.getUserName());
             insertQuery.setString(2,user.getPassword());
             insertQuery.setString(3,user.getEmail());
-            Boolean rez = insertQuery.executeUpdate() != 0;
-            insertQuery.close();
-            connection.close();
-            return rez;
+            return insertQuery.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,13 +38,16 @@ public class UserDao {
     }
 
     public boolean verificaUser(String user, String password) {
+
         try {
             selectQuery.setString(1, user);
             selectQuery.setString(2,password);
-            ResultSet resultSet = selectQuery.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try (ResultSet resultSet = selectQuery.executeQuery()){
             if(resultSet.next()){
-                insertQuery.close();
-                connection.close();
                 return true;
             }
         } catch (SQLException e) {
